@@ -1,0 +1,186 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotstar</title>
+<style>
+    body{
+        background-color:rgb(19,26,40) ;
+        width: 100%;
+    }
+    #container{
+        width:100%;
+        background-color:rgb(19,26,40) ;
+        
+    }
+    #navbar{
+        width:100%; 
+        background-color: rgb(18,25,38); 
+    }
+    #search{
+        width:30%;
+        position: relative;
+        float: right;
+        margin-right: 50px;
+        text-align: right;
+    }
+    #query{
+        width:60%;
+        border: none;
+        background-color: rgb(18,25,38);  
+        border-bottom: 1px solid rgb(238, 238, 238);
+        background-image: url('searchicon.png');
+        background-repeat: no-repeat;
+        transition: width 0.4s ease-in-out;
+        color: white;
+        padding: 5px;
+        display: inline-block;
+      font-size: 16px;
+    }
+    #query:focus{
+        outline: none;
+        width:80%;
+
+
+    }
+    #search>img{
+        width:8%;
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    #movies{
+        position:absolute;
+        width:80%;
+        border:1px solid rgb(95, 95, 95);
+        display: none;
+        top:30px;
+        left:11%;
+        height: 400px;
+        overflow-y: scroll;
+        margin-top: 2px;
+        background-color: rgb(12,17,27);
+        border-bottom-left-radius:5px ;
+        border-bottom-right-radius: 5px;
+
+    }
+
+    #movies::-webkit-scrollbar{
+        display: none;
+    }
+
+
+    #movies>div{
+        margin: 8px;
+        border-radius: 5px;
+        background-color: rgb(25,33,51);
+        cursor: pointer;
+
+    }
+    #movies>div:hover{
+        border: 1px solid rgb(129, 127, 127);
+    }
+
+    #movies>div>img{
+        width:40%;
+        height: 90px;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 2px;
+    }
+
+    #movies>div>div{
+        width:55%;
+        display: inline-block;
+        vertical-align: top;
+        padding: 5px;
+        color: white;
+        font-family: serif;
+        text-align: left;
+    }
+    #movies>div>div>h4{
+        overflow: hidden;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 300;
+    }
+    #movies>div>div>h6{
+        overflow: hidden;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 100;
+    }
+</style>
+
+</head>
+
+<body>
+    <div id="container">
+        <div id="navbar">
+            <div id="search">
+                <input type="text" id="query" oninput=debounce(main,300)>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/VisualEditor_-_Icon_-_Search-big_-_white.svg/120px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png?20140815221140">
+                <div id="movies"></div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+<script>
+    async function main(){
+        try {
+            let data=await search();
+            if(!data){
+                return false;
+            }
+            display(data.Search);
+        } catch (error) {
+            console.log("error")
+        }
+    }
+
+    async function search(){
+        var query=document.getElementById('query').value;
+        var res=await fetch("http://www.omdbapi.com/?apikey=92f8e5a&s="+query);
+        var data=await res.json();
+        return data;
+    }
+
+    function display(data){
+        var movieCon=document.getElementById('movies');
+        movieCon.innerHTML='';
+        movieCon.style.display='block';
+
+        data.forEach(function(ele){
+            var item=document.createElement('div');
+            var img=document.createElement('img');
+            img.src=ele.Poster;
+
+            var titleCon=document.createElement('div');
+            var title=document.createElement('h4');
+            title.innerText=ele.Title;
+            var year=document.createElement('h6');
+            year.innerText=ele.Year;
+            titleCon.append(title,year);
+
+            item.append(img,titleCon);
+
+            movieCon.append(item);
+        });
+
+
+    }
+
+    let timerId;
+    function debounce(func, delay){
+
+        if(timerId){
+            clearTimeout(timerId);
+        }
+        timerId=setTimeout(function(){
+            func();
+        },delay);
+    }
+</script>
+</html>
