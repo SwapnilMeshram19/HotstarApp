@@ -116,7 +116,7 @@
         font-weight: 100;
     }
     #movie-detail-container{
-        width: 95%;
+        width: 80%;
         margin: auto;
         border-radius:10px;
         background-color: rgb(3,11,23);
@@ -158,8 +158,9 @@
     }
 
     #movie-detail-container>img{
-        width: 60%  ;
+        width: 50%  ;
         height: 450px;
+        margin-left: auto;
         border-bottom-right-radius:10px;
         border-top-right-radius:10px;
     }
@@ -252,7 +253,7 @@
         var title=document.createElement('h1');
         title.innerText=data.Title;
         var time=document.createElement('div');
-        time.innerText=data.Runtime+" Minutes";
+        time.innerHTML=data.Runtime+"&nbsp&nbsp&nbsp&nbsp"+data.Released;
         time.className='time';
         var plot=document.createElement('div');
         plot.innerText=data.Plot;
