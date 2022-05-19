@@ -7,23 +7,27 @@
 <style>
     body{
         background-color:rgb(19,26,40) ;
-        width: 100%;
+    }
+    
+    #navbar{
+        width:100%; 
+        background-color: rgb(18,25,38); 
+        position: relative;
+        
     }
     #container{
         width:100%;
         background-color:rgb(19,26,40) ;
+        margin-top: 100px;
         
-    }
-    #navbar{
-        width:100%; 
-        background-color: rgb(18,25,38); 
     }
     #search{
         width:30%;
-        position: relative;
         float: right;
         margin-right: 50px;
         text-align: right;
+        position: relative;
+        top: -80;
     }
     #query{
         width:60%;
@@ -112,8 +116,54 @@
         font-weight: 100;
     }
     #movie-detail-container{
-        width: 100%;
+        width: 95%;
+        margin: auto;
+        border-radius:10px;
+        background-color: rgb(3,11,23);
+        margin-top:100px;
+        display: flex;
+        text-align: center;
+
     }
+
+    .movietext{
+        width: 40%;
+        padding-left: 30px;
+        text-align: left;
+        
+    }
+    .movietext>h1{
+        color: white;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.2;
+        margin-bottom: 12px;
+        margin-top: 50px;
+    }
+    .time{
+        color: rgb(154,155,153);
+        margin-bottom: 12px;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    .plot{
+        margin-bottom: 14px;
+        font-size: 16px;
+        color: rgb(172,194,209);
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 400;
+        padding-right: 10px;
+    }
+
+    #movie-detail-container>img{
+        width: 60%  ;
+        height: 450px;
+        border-bottom-right-radius:10px;
+        border-top-right-radius:10px;
+    }
+
 </style>
 
 </head>
@@ -196,15 +246,24 @@
         url="http://www.omdbapi.com/?apikey=92f8e5a&i="+movieDetails.imdbID;
         var data=await fetchData(url);
         console.log(data);
+        console.log(data.Title);
         var movietext=document.createElement("div");
+        movietext.className='movietext';
         var title=document.createElement('h1');
         title.innerText=data.Title;
+        var time=document.createElement('div');
+        time.innerText=data.Runtime+" Minutes";
+        time.className='time';
+        var plot=document.createElement('div');
+        plot.innerText=data.Plot;
+        plot.className='plot';
         
         var moviePoster=document.createElement('img');
+
         moviePoster.src=data.Poster;
         
-        movietext.append(title);
-        movieContainer.append(moviePoster);
+        movietext.append(title,time,plot);
+        movieContainer.append(movietext,moviePoster);
     }
     async function fetchData(url){
         try {
