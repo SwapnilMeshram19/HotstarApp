@@ -156,6 +156,10 @@
         font-weight: 400;
         padding-right: 10px;
     }
+    .imdbRating{
+        font-size:17px;
+        color: bisque;
+    }
 
     #movie-detail-container>img{
         width: 50%  ;
@@ -164,6 +168,7 @@
         border-bottom-right-radius:10px;
         border-top-right-radius:10px;
     }
+
 
 </style>
 
@@ -258,12 +263,15 @@
         var plot=document.createElement('div');
         plot.innerText=data.Plot;
         plot.className='plot';
+        var imdbRating=document.createElement('div');
+        imdbRating.innerText="IMDb Rating: "+data.Ratings[0].Value;
+        imdbRating.className='imdbRating';
         
         var moviePoster=document.createElement('img');
 
         moviePoster.src=data.Poster;
         
-        movietext.append(title,time,plot);
+        movietext.append(title,time,plot,imdbRating);
         movieContainer.append(movietext,moviePoster);
     }
     async function fetchData(url){
